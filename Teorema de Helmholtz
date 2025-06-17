@@ -1,0 +1,360 @@
+#Teorema de Helmholtz
+from manim import * # Importação do módulo principal do Manim, responsável pela criação da cena e animações
+class TeoremaHversao2(Scene):# Definição da classe da cena que será renderizada pelo Manim
+    def construct(self):     # Método principal da cena, onde os objetos são criados e as animações definidas
+        """
+Animação didática com Manim - Derivação do Teorema de Helmholtz
+
+Este código utiliza a biblioteca Manim (Mathematical Animation Engine) para gerar uma animação 
+que apresenta passo a passo a derivação do Teorema de Helmholtz para campos vetoriais. 
+A animação mostra as manipulações matemáticas e identidades vetoriais aplicadas à decomposição 
+de um campo vetorial em suas componentes divergente e rotacional.
+
+Estrutura do código:
+--------------------
+1. Definição da classe TeoremaHversao2 que herda de Scene (classe base do Manim para animações).
+2. Configuração inicial de parâmetros como escala dos textos, duração das animações e tempo de espera entre transições.
+3. Criação dos objetos gráficos (Mobjects):
+    - Textos explicativos (Text)
+    - Equações em LaTeX (MathTex)
+    - Linhas e marcadores para destaque (Line, overbrace, underbrace)
+4. Aplicação das identidades vetoriais:
+    - Laplaciano de um campo vetorial
+    - Teorema da divergência de Gauss
+    - Teorema de Stokes
+5. Animações progressivas:
+    - Introdução de textos e equações usando Write e ReplacementTransform
+    - Remoção e substituição de elementos com FadeOut e Unwrite
+    - Criação de linhas e overbraces para destacar partes das expressões
+6. Finalização:
+    - Apresentação das expressões finais para o potencial escalar (Φ) e o potencial vetorial (A)
+    - Limpeza da cena com FadeOut ao final da animação.
+
+Objetivo didático:
+------------------
+Este script visa:
+- Ajudar estudantes a visualizar o processo de decomposição de um campo vetorial.
+- Mostrar como as integrais de volume se transformam em integrais de superfície.
+- Ilustrar o uso das identidades vetoriais fundamentais em eletromagnetismo e física matemática.
+
+Como usar:
+----------
+1. Execute o script no ambiente Manim (recomenda-se Manim CE).
+2. O vídeo gerado exibirá toda a sequência de transformações matemáticas.
+3. Ideal para uso em aulas, palestras ou materiais didáticos online.
+
+Observações:
+------------
+- O código está comentado em português para facilitar o entendimento por estudantes e professores.
+- As animações foram pensadas para ritmo didático, com pausas para leitura e assimilação.
+- Pode ser customizado para exibir apenas partes do processo ou alterar o ritmo de apresentação.
+
+Autor: Pedro Antonio
+"""
+        escala = 0.6 # Escala usada para diminuir o tamanho padrão dos textos e fórmulas
+        duracao = 2 # Duração padrão das animações (em segundos)
+        tempo_de_espera_entre_equacoes =  2 # Tempo de espera entre as exibições das equações (em segundos)
+
+        # Textos introdutórios e equações iniciais
+
+        # Criação de um texto introdutório no topo da tela
+        t1 = Text('Seja F(x) uma função vetorial dada por: ').scale(escala).to_edge(UP)
+
+        # Exibição da forma integral inicial do campo vetorial F(x)
+        t2 = MathTex(r"\mathbf{F(x)} = \int \limits_V \mathbf{F(x')} \delta(\mathbf{x} - \mathbf{x'})d^3x'").scale(escala)
+
+        # Próxima linha de texto que será exibida após a primeira equação
+        t3 = Text('Sabendo que:').scale(escala).to_edge(UP)
+
+        # Expressão da função delta de Dirac em termos do Laplaciano do potencial
+        t4 = MathTex(r" \delta(\mathbf{x} - \mathbf{x'}) = -\dfrac{1}{4\pi} \nabla ^{2} \left(\dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}\right) ").scale(escala)
+        
+        # Continuação do raciocínio com outro texto explicativo
+        t5 = Text('Então temos: ').scale(escala).to_edge(UP)
+        
+        # Nova forma da equação do campo após substituição da delta de Dirac
+        t6 = MathTex(r"\mathbf{F(x)} = -\dfrac{1}{4\pi} \int \limits_V \mathbf{F(x')} \nabla ^{2} \left(\dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}\right) d^3x' ").scale(escala)
+
+        # Texto e equação após mover o Laplaciano
+        t7 = Text( 'Retirando o laplaciano para fora da integral, temos:').scale(escala).to_edge(UP)
+        
+        # Equação com o Laplaciano aplicado diretamente fora da integral
+        t8 = MathTex(r"\mathbf{F(x)} = -\dfrac{1}{4\pi} \nabla ^{2} \int \limits_V \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x'" ).scale(escala)
+
+        # Texto explicando o uso da identidade vetorial
+        t9 = Text('Sabendo da a identidade vetorial (6.j): ').scale(escala).to_edge(UP)
+        
+        # Identidade vetorial usada para decompor o Laplaciano de um campo vetorial
+        t10 = MathTex(r" \nabla^2\mathbf{a} = \nabla \left(   \nabla \cdot \mathbf{a} \right) - \nabla \times \left(  \nabla \times \mathbf{a} \right) ").scale(escala)
+        
+        # Texto para indicar a aplicação da identidade na equação
+        t11 = Text('Temos assim que: ').scale(escala).to_edge(UP)
+        
+        # Equação de F(x) após a aplicação da identidade vetorial
+        t12 = MathTex(r"\mathbf{F(x)} = -\dfrac{1}{4\pi} \nabla \left( \nabla \cdot \int \limits_V \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' \right) + \dfrac{1}{4\pi} \nabla \times \left( \nabla \times  \int \limits_V \dfrac{\mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' \right) ").scale(escala)
+
+        # Texto explicativo para facilitar a interpretação das integrais e overbraces
+        t13 = Text('Para facilitar a explicação, temos que: ').scale(escala).to_edge(UP)
+       
+        # Equação com overbraces destacando as partes do divergente e rotacional
+        t14 = MathTex(r"\mathbf{F(x)} = -\dfrac{1}{4\pi} \nabla \overbrace{\left( \nabla \cdot \int \limits_V \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' \right)}^{\nabla \cdot \left( \varphi \mathbf{a} \right)} + \dfrac{1}{4\pi} \nabla \times \overbrace{ \left( \nabla \times \int \limits_V \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' \right) }^{\nabla \times \left( \varphi \mathbf{a} \right)}").scale(escala)
+        
+        # Definição das variáveis auxiliares usadas na identidade vetorial
+        t15 = MathTex(r" \text{Onde, } \varphi = \dfrac{1}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \text{  e  } \mathbf{a} = \mathbf{F(x')} ").scale(escala)
+        
+        # Texto indicando aplicação da identidade vetorial 6.b (divergente do produto escalar)
+        t16 = Text('Aplicando 6.b: ').scale(escala).to_edge(UP)
+        
+        # Expressão geral da identidade vetorial 6.b
+        t17 = MathTex(r" \nabla \cdot \left( \varphi \, \mathbf{a} \right) = \varphi \left ( \nabla \cdot \mathbf{a} \right) + \mathbf{a} \, \cdot \, \left( \nabla \varphi \right)").scale(escala)
+        
+        # Texto explicando por que o divergente da função F(x') é zero na integral
+        t18 = MathTex(
+            r" \text{Como } \mathbf{a} =  \mathbf{F(x')} \text{ o } \nabla \cdot \mathbf{F(x')} = 0 \text{ visto em (10.1) e (8.35),} \\ \text{pois o } \nabla \text{ não está sendo aplicado em x, mas em x', logo como a variável é diferente, o divergente resulta em zero.} "
+        ).scale(escala * 0.9)
+        
+        # Texto sinalizando a continuação do uso da identidade vetorial
+        t19 = Text('Aplicando isso em 6.b temos:').scale(escala).to_edge(UP)
+        
+        # Resultado da aplicação de 6.b no nosso caso
+        t20 = MathTex(r"\nabla \cdot \left( \varphi \, \mathbf{a} \right) = \mathbf{a} \, \cdot \, \left( \nabla \varphi \right) ").scale(escala)
+        
+        # Expressão específica para nosso campo F(x')
+        t21 = MathTex(r"\nabla \cdot \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) = \mathbf{F(x')} \, \cdot \, \nabla \left(  \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)").scale(escala)
+        
+        # Texto sinalizando o resumo até o momento
+        t22 = Text('Então, temos até agora que: ').scale(escala).to_edge(UP)
+        
+        # Equação de F(x) com o resultado da aplicação da identidade no termo divergente
+        t23 = MathTex(r" \mathbf{F(x)} = -\dfrac{1}{4\pi} \nabla \left( \int \limits_V \mathbf{F(x')} \, \cdot \, \nabla \left(  \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) d^3x' \right) + \dfrac{1}{4\pi} \nabla \times \overbrace{\left( \nabla \times  \int \limits_V \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' \right) }^{\nabla \times \left( \varphi \mathbf{a} \right)}").scale(escala)
+        
+        # Texto indicando início da análise do termo rotacional (aplicação da 6.c)
+        t24 = Text('Fazendo um processo parecido para a outra integral, temos uma aplicação 6.c:').scale(escala).to_edge(UP)
+        
+        # Expressão da identidade vetorial para rotacional de produto
+        t25 = MathTex(r"\nabla \times (\varphi \, \mathbf{a} ) = \varphi \left (\nabla \times \mathbf{a} \right) + \left( \nabla \varphi \right) \times \mathbf{a}").scale(escala)
+
+        t26 = MathTex(r" \text{Analogamente, sabendo que } \nabla \times \mathbf{a} = \nabla \times \mathbf{F(x')} = 0 \text{ temos que:} ").scale(escala).to_edge(UP)
+        t27 = MathTex(r"\nabla \times (\varphi \, \mathbf{a} ) = \left( \nabla \varphi \right) \times \mathbf{a}").scale(escala)
+        t28 = MathTex(r" \nabla \times (\varphi \, \mathbf{a} ) = - \mathbf{a} \times \left( \nabla \varphi \right)").scale(escala)
+        t29 = MathTex(r"\nabla \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) = - \mathbf{F(x')} \times  \nabla \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)").scale(escala)
+        t30 = MathTex(r"\text{E como } \nabla \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) = -\nabla^{\prime} \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) ").scale(escala)
+        t31 = Text('Sendo assim, temos: ').scale(escala).to_edge(UP)
+        t32 = MathTex(r" \nabla \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) = - \mathbf{F(x')} \times \nabla \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)").scale(escala)
+        t33 = MathTex(r" \nabla \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) = \mathbf{F(x')} \times \nabla^{\prime} \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)").scale(escala)
+        t34 = MathTex(r" \text{Mudando a aplicação de } \nabla \text{ de } \mathbf{x} \text{ para } \mathbf{x'} \text{ temos que mudar o sinal, onde chegamos em: }").scale(escala).to_edge(UP)
+        t35 = MathTex(r"\mathbf{F(x)} = \dfrac{1}{4\pi} \nabla \left( \int \limits_V \mathbf{F(x')} \cdot \nabla^{\prime}  \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) d^3x' \right)  + \dfrac{1}{4\pi} \nabla \times \left( \int \limits_V \mathbf{F(x')} \times \nabla' \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) d^3x' \right) ").scale(escala)
+        t36 = Text('Ainda assim, necessitamos de mais manipulações matemática, ').scale(escala).to_edge(UP)
+        t36_1 = Text('Com isso, chamaremos as partes utilizadas da seguinte forma: ').scale(escala).next_to(t36, DOWN)
+
+        # Para simplificar, vou recriar t37 com o overbrace no próprio MathTex
+        t37 = MathTex(r"\mathbf{F(x)} = \dfrac{1}{4\pi} \nabla \left( \int \limits_V \underbrace {\mathbf{F(x')} \cdot \nabla^{\prime} \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)}_{\text{I}} d^3x' \right) + \dfrac{1}{4\pi} \nabla \times \left( \int \limits_V \underbrace {\mathbf{F(x')} \times \nabla' \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)}_{\text{II}} d^3x' \right) ").scale(escala)
+
+        t38 = MathTex(r"\text{Usando as identidades vetoriais 6.b para } \textsc{I: } ").scale(escala*2).to_edge(UP)
+        t39 = MathTex(r" \nabla \cdot \left( \varphi \, \mathbf{a} \right) = \varphi \left ( \nabla \cdot \mathbf{a}  \right) + \mathbf{a} \, \cdot \, \left( \nabla \varphi \right)").scale(escala)
+        t40 = MathTex(r"\nabla \cdot \left( \varphi \, \mathbf{a} \right) - \varphi \left ( \nabla \cdot \mathbf{a}  \right) = \mathbf{a} \, \cdot \, \left( \nabla \varphi \right) ").scale(escala)
+        t41 = MathTex(r"\mathbf{a} \, \cdot \, \left( \nabla \varphi \right) = \nabla \cdot \left( \varphi \, \mathbf{a} \right) - \varphi \left ( \nabla \cdot \mathbf{a}  \right)  ").scale(escala)
+        t42 = MathTex(r"\mathbf{a} \, \cdot \, \left( \nabla \varphi \right) = - \left(-\nabla \cdot \left( \varphi  \, \mathbf{a} \right) + \varphi \left ( \nabla \cdot \mathbf{a}  \right) \right)").scale(escala)
+        t43 = MathTex(r"\mathbf{a} \, \cdot  \left( \nabla \varphi \right) = - \left( \varphi \left ( \nabla \cdot \mathbf{a}  \right)-\nabla \cdot \left( \varphi  \, \mathbf{a} \right) \right)").scale(escala)
+        
+        t44 = Text('Aplicando no nosso caso, temos: ').scale(escala).to_edge(UP)
+        t45 = MathTex(r"\mathbf{F(x')} \cdot  \nabla \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) = - \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \left( \nabla \cdot \mathbf{F(x')} \right) - \nabla \cdot \left( \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) \right) ").scale(escala)
+        t46 = MathTex(r" \mathbf{F(x')} \cdot \nabla \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) = - \left( \dfrac{\nabla \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \ - \nabla \cdot \left( \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) \right) ").scale(escala)
+        
+        t47 = MathTex(r"\text{Usando as identidades vetoriais 6.c para } \textsc{II}: ").scale(escala*2).to_edge(UP)
+        t48 = MathTex(r"\nabla \times (\varphi \, \mathbf{a} ) = \varphi \left (\nabla \times \mathbf{a} \right) + \left( \nabla \varphi \right) \times \mathbf{a}").scale(escala)
+        t49 = MathTex(r"\nabla \times (\varphi \, \mathbf{a} ) - \varphi \left (\nabla \times \mathbf{a} \right) = \left( \nabla \varphi \right) \times \mathbf{a}").scale(escala)
+        t50 = MathTex(r" - \left[\nabla \times (\varphi \, \mathbf{a} ) - \varphi \left (\nabla \times \mathbf{a} \right) \right] = - \left( \nabla \varphi \right) \times \mathbf{a}").scale(escala)
+        t51 = MathTex(r" - \nabla \times (\varphi \, \mathbf{a} ) + \varphi \left (\nabla \times \mathbf{a} \right) = \mathbf{a} \times \left( \nabla \varphi \right)").scale(escala)
+        
+        t52 = Text('Aplicando no nosso caso, temos:').scale(escala).to_edge(UP)
+        t53 = MathTex(r"- \nabla \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}   \right ) + \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}   \left (\nabla \times \mathbf{F(x')} \right)   =   \mathbf{F(x')} \times \left( \nabla \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}   \right)").scale(escala)
+                
+        t54 = MathTex(r"- \nabla \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  \right ) + \dfrac{\nabla \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} =  \mathbf{F(x')} \times \left( \nabla \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  \right)").scale(escala)
+        
+        t55 = Text('Com isso, temos:').scale(escala).to_edge(UP)
+        t56 = MathTex(r"\mathbf{F(x)} = \dfrac{1}{4\pi} \nabla \left(  \int \limits_V \underbrace {\mathbf{F(x')} \cdot \nabla^{\prime}  \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)}_{- \left( \dfrac{\nabla \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} - \nabla \cdot \left( \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) \right)} d^3x' \right)  + \dfrac{1}{4\pi} \nabla \times \left(   \int \limits_V \underbrace {\mathbf{F(x')} \times \nabla'  \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)}_{  - \nabla \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  \right ) + \dfrac{\nabla \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} } d^3x' \right) ").scale(escala)
+        
+        t57 = MathTex(r"\mathbf{F(x)} = \dfrac{1}{4\pi} \nabla \left(  \int \limits_V - \left( \dfrac{\nabla \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} - \nabla \cdot \left( \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) \right) d^3x' \right)  + \dfrac{1}{4\pi} \nabla \times \left(   \int \limits_V - \nabla \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  \right ) + \dfrac{\nabla \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' \right)").scale(escala)
+        
+        t58 =MathTex(r"\mathbf{F(x)} = \dfrac{1}{4\pi} \nabla \left(  \int \limits_V \underbrace {\mathbf{F(x')} \cdot \nabla^{\prime}  \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)}_{- \left( \dfrac{\nabla \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  - \nabla \cdot \left( \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) \right)} d^3x' \right)  + \dfrac{1}{4\pi} \nabla \times \left(   \int \limits_V \underbrace {\mathbf{F(x')} \times \nabla^{\prime}  \left( \dfrac{1}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)}_{  - \nabla^{\prime} \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  \right ) + \dfrac{\nabla^{\prime} \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} } d^3x' \right) ").scale(escala)
+        
+        t59 = MathTex(r"\mathbf{F(x)} = \dfrac{1}{4\pi} \nabla \left(  \int \limits_V - \left( \dfrac{\nabla^{\prime} \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} - \nabla^{\prime} \cdot \left( \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) \right) d^3x' \right)  + \dfrac{1}{4\pi} \nabla \times \left(   \int \limits_V - \nabla^{\prime} \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  \right ) + \dfrac{\nabla^{\prime} \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' \right) ").scale(escala)
+        
+        t60 = MathTex(r"\mathbf{F(x)} = -\dfrac{1}{4\pi} \nabla \left(  \int \limits_V   \dfrac{\nabla^{\prime} \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x'  - \underbrace{\int \limits_V  \nabla^{\prime} \cdot \left( \dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right)}_{\text{III}}  d^3x' \right)   + \dfrac{1}{4\pi} \nabla \times \left(   \int \limits_V \dfrac{\nabla^{\prime} \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' - \underbrace{\int \limits_V \nabla^{\prime} \times \left(\dfrac{\mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert}  \right ) d^3x'}_{\text{IV}} \right) ").scale(
+            escala*0.8)
+        
+        t61 = MathTex(r"\text{Em } \textsc{III} \text{ aplicamos o teorema da divergência de Gauss} \\ \text{e em} \textsc{IV} \text{aplicamos o teorema de Stokes (mais precisamente a eq 7b),} \\ \text{Sendo assim, temos: }").scale(escala*1.5).to_edge(UP)
+        
+        t62 = MathTex(r"\mathbf{F(x)} = -\dfrac{1}{4\pi} \nabla \left( \int \limits_V \dfrac{\nabla^{\prime} \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' - \oint \limits_S \dfrac{\mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \cdot \hat{\mathbf{n}}^{\prime} dS^{\prime} \right) + \dfrac{1}{4\pi} \nabla \times \left(\int \limits_V \dfrac{\nabla^{\prime} \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' - \oint \limits_S \hat{\mathbf{n}}^{\prime} \times \left( \dfrac{\mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) dS^{\prime} \right) ").scale(
+            escala * 0.8)
+        t63 = MathTex(r"\mathbf{F(x)} = - \nabla \left( \underbrace{\dfrac{1}{4\pi} \int \limits_V \dfrac{\nabla^{\prime} \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' - \dfrac{1}{4\pi} \oint \limits_S \dfrac{\mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \cdot \hat{\mathbf{n}}^{\prime} dS^{\prime} }_{\Phi} \right) + \nabla \times \left(\underbrace{\dfrac{1}{4\pi} \int \limits_V \dfrac{\nabla^{\prime} \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' - \dfrac{1}{4\pi} \oint \limits_S \hat{\mathbf{n}}^{\prime} \times \left( \dfrac{\mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) dS^{\prime}}_{\mathbf{A}} \right)").scale(
+            escala * 0.8)
+        
+        
+        t64 = MathTex(r"\Phi = \dfrac{1}{4\pi} \int \limits_V \dfrac{\nabla^{\prime} \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' - \dfrac{1}{4\pi} \oint \limits_S \dfrac{\mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \cdot \hat{\mathbf{n}}^{\prime} dS^{\prime}").scale(escala)
+        t65 = MathTex(r"\mathbf{A} = \dfrac{1}{4\pi} \int \limits_V \dfrac{\nabla^{\prime} \times \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x' - \dfrac{1}{4\pi} \oint \limits_S \hat{\mathbf{n}}^{\prime} \times \left( \dfrac{\mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} \right) dS^{\prime}").scale(escala)
+        t66 = MathTex(r" \text{Se } \mathbf{F} \to 0 \text{ mais rápido do que } \dfrac{1}{r}").scale(escala)
+        t67 = MathTex(r"\Phi = \dfrac{1}{4\pi} \int \limits_V   \dfrac{\nabla^{\prime} \cdot \mathbf{F(x')}}{ \left\lVert \mathbf{x} - \mathbf{x'} \right\rVert} d^3x'").scale(escala)
+        t68 = MathTex(r"\mathbf{A} = \dfrac{1}{4\pi} \int \limits_V \dfrac{\nabla^{\prime} \times \mathbf{F(x')}}{\left\lVert \mathbf{x} - \mathbf{x'} \right\rVert } d^3x'").scale(escala)
+       
+        # Animação corrigida: Transições evitando sobreposição
+        self.play(Write(t1), run_time=duracao)
+        self.play(Write(t2), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t1, t3), ReplacementTransform(t2, t4), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t3, t5), ReplacementTransform(t4, t6), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t5, t7), ReplacementTransform(t6, t8), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t7, t9), ReplacementTransform(t8, t10), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t9, t11), ReplacementTransform(t10, t12), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        # Fixando a equação t14 no topo com uma linha abaixo
+        self.play(ReplacementTransform(t11, t13), t12.animate.become(t14).next_to(t13, DOWN, buff=0.2), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)            
+        self.play(Write(t15.next_to(t14, DOWN)), run_time=duracao) #t15 vai ficar embaixo da linha, você pode ajustar a posição dele, se precisar
+        self.wait(tempo_de_espera_entre_equacoes)
+              
+        #self.play(FadeOut(t15), ReplacementTransform(t13, t16), ReplacementTransform(t14, t17), run_time=duracao)
+        self.play(Unwrite(t15), ReplacementTransform(t13, t16), Write(t17), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        self.play(Write(t18.next_to(t17, DOWN)), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes*1.2)
+        self.play(FadeOut(t18), ReplacementTransform(t16, t19), ReplacementTransform(t17, t20), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t20, t21), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t19, t22), ReplacementTransform(t21, t23), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(FadeOut(t23), FadeOut(t12), ReplacementTransform(t22, t24), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes*0.25)
+        self.play(Write(t25.next_to(t24, DOWN)), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        self.play(FadeOut(t24), FadeOut(t25), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes*0.5)
+
+        self.play(Write(t26), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t26, t27), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t27, t28), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t28, t29), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t29, t30), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(FadeOut(t30), Write(t31), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t31, t32), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        self.play(FadeOut(t32), Write(t34), run_time = duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        
+        self.play(ReplacementTransform(t34, t33), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t33, t35), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        self.play(ReplacementTransform(t35, t36), run_time=duracao)
+        self.play(Write(t36_1), run_time = duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t36, t37), Unwrite(t36_1), run_time=duracao)
+
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(FadeOut(t37), Write(t38), run_time=duracao)
+       
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Write(t39), run_time = duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t39, t40), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t40, t41), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t41, t42), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t42, t43), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t38, t44), FadeOut(t43), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        
+        self.play(Write(t44), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Write(t45), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t45, t46), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+       
+        self.play(FadeOut(t46), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+
+        self.play(ReplacementTransform(t44,t47), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Write(t48), run_time = duracao)
+
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t48, t49), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t49, t50), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t50, t51), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Unwrite(t51), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        self.play(ReplacementTransform(t47, t52), run_time = duracao)
+        
+        self.wait(tempo_de_espera_entre_equacoes)
+
+        self.play(Write(t53), run_time=duracao)
+
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t53, t54), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t52, t55), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Unwrite(t54), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+
+
+
+        self.play(ReplacementTransform(t55, t56), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t56, t56), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Unwrite(t56), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t56, t57), run_time=duracao*1.2)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t57, t58), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t58, t59), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t59, t60), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t60, t61), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes * 1.5)
+        self.play(ReplacementTransform(t61, t62), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t62, t63), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t63, t64), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t64, t65), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(ReplacementTransform(t65, t66), run_time=duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Write(t67.next_to(t66, DOWN) ), run_time = duracao)
+        self.wait(tempo_de_espera_entre_equacoes)
+        self.play(Write(t68.next_to(t67, DOWN) ), run_time = duracao)
+        self.wait(3)
+
+        self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=2)
